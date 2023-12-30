@@ -1,12 +1,13 @@
 -- Active: 1702159022160@@127.0.0.1@3306@bdmoneyinout
 
-CALL addUser('Aaron','Hernandez','aaronhdz1919@gmail.com','aaronknow19','lamaquina',110000.00 );
+-- CALL addUser('Aaron','Hernandez','aaronhdz1919@gmail.com','aaronknow19','lamaquina',110000.00 );
 DROP PROCEDURE IF EXISTS addUser;
 DELIMITER // 
 CREATE PROCEDURE addUser(IN FirstN VARCHAR(30), IN LastN VARCHAR(30), IN mail VARCHAR(60),
         IN UserN VARCHAR(40), pass VARCHAR(40), IN Amount DECIMAL(10,2))
 BEGIN
     DECLARE newId  INT DEFAULT 0;
+    DECLARE sql_error TINYINT DEFAULT FALSE;
     
     START TRANSACTION;
     INSERT INTO tbPerson(id, `FirstName`, `LastName`, `Email`) 
@@ -36,27 +37,36 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS addIncome;
 DELIMITER // 
-CREATE PROCEDURE addIncome(IN idType INT , IN userId INT , IN quantity DECIMAL(10,2), IN dateIn DATETIME, IN dcp VARCHAR(60))
+CREATE PROCEDURE addIncome(IN userId INT, IN idType INT , IN quantity DECIMAL(10,2), IN dateIn DATETIME, IN dcp VARCHAR(60))
 BEGIN
 
     DECLARE newId  INT UNSIGNED DEFAULT 1000;
     DECLARE res DECIMAL (10,2) DEFAULT 0.0;
+    DECLARE sql_error TINYINT DEFAULT FALSE;
     
     THIS_PROC: BEGIN
 
-    SELECT COUNT(*) INTO newId FROM tbuser WHERE userId = idUser;
+    SELECT COUNT(*) INTO newId FROM tbuser WHERE userId = id;
  
     IF( newId < 1)THEN			
       SIGNAL SQLSTATE 'HY000'
 			SET MESSAGE_TEXT = 'ERROR USER ID DOES NOT EXIST';
 			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
 	END IF;
+    
+     SELECT COUNT(*) INTO newId FROM tbInputType WHERE idType = id;
+ 
+    IF( newId < 1)THEN			
+      SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'ERROR: THERE INPUT TYPE DOES NOT EXIST';
+			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
+	END IF;
 
     START TRANSACTION;
 
-    SELECT id INTO newId FROM tbuser WHERE userId = idUser;
+    SELECT id INTO newId FROM tbuser WHERE userId = id;
 
-    SELECT Balance INTO res FROM tbmoneybalnce WHERE idUser = userId;
+    SELECT Balance INTO res FROM tbmoneybalnce WHERE id = userId;
 
     SET res = res + quantity;
 
@@ -78,6 +88,9 @@ DELIMITER ;
 
 
 
+
+
+
 -- |||||||||||||| ADDOUTGOING |||||||||||||||||
 DROP PROCEDURE IF EXISTS addOutGoing;
 DELIMITER //
@@ -86,11 +99,19 @@ BEGIN
 
     DECLARE newId  INT UNSIGNED DEFAULT 1000;
     DECLARE res DECIMAL (10,2) DEFAULT 0.0;
+    DECLARE sql_error TINYINT DEFAULT FALSE;
     
     THIS_PROC: BEGIN
 
     SELECT COUNT(*) INTO newId FROM tbuser WHERE userId = idUser;
  
+    IF( newId < 1)THEN			
+      SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'ERROR USER ID DOES NOT EXIST';
+			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
+	END IF;
+    
+    SELECT COUNT(*) INTO newId FROM tbInputType WHERE userId = idUser;
     IF( newId < 1)THEN			
       SIGNAL SQLSTATE 'HY000'
 			SET MESSAGE_TEXT = 'ERROR USER ID DOES NOT EXIST';
@@ -122,6 +143,8 @@ DELIMITER ;
 
 
 -- |||||||||*********** procedure to know how much money income ************** ||||||||||||||
+
+-- /// TODO: ESTE PROCEDIMENTO NO ESTA LISTO 
 
 DROP PROCEDURE IF EXISTS estadisticaVentas;
 DELIMITER // 
@@ -205,15 +228,5 @@ BEGIN
 END //
 DELIMITER ;
 
-
-
-
-INSERT INTO tbperiodicity(id, `PeriType`,`Descrip`) VALUES(0,'recurrent','To search the movements that are always made.');
-INSERT INTO tbperiodicity(id, `PeriType`,`Descrip`) VALUES(0,'extraordinary','To look for movements that are not done regularly.');
-
-INSERT INTO tbinputtype(id, `idPeriodicity`, `InputType`, `Descrip` ) VALUES(0,1,'Agua','Pago de recibo de Agua');
-INSERT INTO tbinputtype(id, `idPeriodicity`, `InputType`, `Descrip` ) VALUES(0,1,'Luz','Pago de recibo de Luz');
-INSERT INTO tbinputtype(id, `idPeriodicity`, `InputType`, `Descrip` ) VALUES(0,1,'Gas','Pago de recibo de Gas');
-INSERT INTO tbinputtype(id, `idPeriodicity`, `InputType`, `Descrip` ) VALUES(0,1,'Cable','Pago de recibo de Cable');
 
 

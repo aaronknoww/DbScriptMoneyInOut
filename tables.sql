@@ -1,5 +1,7 @@
 -- Active: 1702159022160@@127.0.0.1@3306@bdmoneyinout
 
+-- DROP DATABASE `bdmoneyinout`;
+
 -- // ******************* CREAING FATHER TABLES ******************************//
 CREATE DATABASE IF NOT EXISTS bdMoneyInOut;
 USE bdMoneyInOut;
@@ -9,7 +11,7 @@ CREATE TABLE IF NOT EXISTS bdmoneyinout.tbPerson
 	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
 	FirstName 		VARCHAR(30) NOT NULL,
     LastName        VARCHAR(30) NOT NULL,
-    Email  	        VARCHAR(60) NOT NULL,
+    Email  	        VARCHAR(60) NOT NULL UNIQUE,
     
     PRIMARY KEY (id)
 )ENGINE = InnoDB;
@@ -63,16 +65,17 @@ CREATE TABLE IF NOT EXISTS bdmoneyinout.tbUser
     idPerson        INT UNSIGNED,
     PRIMARY KEY (id),
     KEY idx_fk_idPerson(idPerson),    
-    CONSTRAINT fk_UserPerson FOREIGN KEY (idPerson) REFERENCES tbPerson (id) ON DELETE CASCADE 
+    CONSTRAINT fk_User_Person FOREIGN KEY (idPerson) REFERENCES tbPerson (id) ON DELETE CASCADE 
 )ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMoneyBalnce
 (
 	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
-	Balance		    DECIMAL(10,2) DEFAULT 0 COMMENT 'To store the money left to every user',
     idUser          INT UNSIGNED,
+	Balance		    DECIMAL(10,2) DEFAULT 0 COMMENT 'To store the money left to every user',
+    
     PRIMARY KEY (id),
-    CONSTRAINT fk_MoneyBalnceUser FOREIGN KEY (idUser) REFERENCES tbUser (id) ON DELETE CASCADE 
+    CONSTRAINT fk_MoneyBalnce_User FOREIGN KEY (idUser) REFERENCES tbUser (id) ON DELETE CASCADE 
 )ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMoneyIncome
