@@ -49,4 +49,10 @@ CALL addUser('Aaron','Hernandez','aar@gmail.com','aaronknow19','lamaquina',11000
 
 CALL addIncome(1, 1, 4000.00, '2023-12-24 19:30:01', 'Pago de nomina semana 52'); 
 
+-- addOutGoing(idType, userId, quantity DECIMAL(10,2), dateIn DATETIME, dcp VARCHAR(60))
+CALL addOutGoing(1, 1, 750.00, '2023-12-15 19:30:01', 'Agua de la casa');
+
+-- TODO: ESTAN PROBADOS LOS 2 PROCEDIMENTOS, HAY QUE TERMINAR EL QUE ESTA PENDIENTE 
+
+
  

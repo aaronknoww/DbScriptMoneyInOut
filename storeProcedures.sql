@@ -94,7 +94,7 @@ DELIMITER ;
 -- |||||||||||||| ADDOUTGOING |||||||||||||||||
 DROP PROCEDURE IF EXISTS addOutGoing;
 DELIMITER //
-CREATE PROCEDURE addOutGoing(IN idType INT , IN userId INT , IN quantity DECIMAL(10,2), IN dateIn DATETIME, IN dcp VARCHAR(60))
+CREATE PROCEDURE addOutGoing( IN userId INT , IN idType INT , IN quantity DECIMAL(10,2), IN dateIn DATETIME, IN dcp VARCHAR(60))
 BEGIN
 
     DECLARE newId  INT UNSIGNED DEFAULT 1000;
@@ -103,7 +103,7 @@ BEGIN
     
     THIS_PROC: BEGIN
 
-    SELECT COUNT(*) INTO newId FROM tbuser WHERE userId = idUser;
+    SELECT COUNT(*) INTO newId FROM tbuser WHERE userId = id;
  
     IF( newId < 1)THEN			
       SIGNAL SQLSTATE 'HY000'
@@ -111,25 +111,27 @@ BEGIN
 			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
 	END IF;
     
-    SELECT COUNT(*) INTO newId FROM tbInputType WHERE userId = idUser;
+     SELECT COUNT(*) INTO newId FROM tbExitType WHERE idType = id;
+ 
     IF( newId < 1)THEN			
       SIGNAL SQLSTATE 'HY000'
-			SET MESSAGE_TEXT = 'ERROR USER ID DOES NOT EXIST';
+			SET MESSAGE_TEXT = 'ERROR: THERE EXIT TYPE DOES NOT EXIST';
 			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
 	END IF;
 
     START TRANSACTION;
 
-    SELECT id INTO newId FROM tbuser WHERE userId = idUser;
+    SELECT id INTO newId FROM tbuser WHERE userId = id;
 
-    SELECT Balance INTO res FROM tbmoneybalnce WHERE idUser = userId;
+    SELECT Balance INTO res FROM tbmoneybalnce WHERE id = userId;
 
     SET res = res - quantity;
 
-    INSERT INTO tbMonesOutGoing(id, `idInputType`, `idUser`, `Amount`, `DateMv`, `Descrip`) 
+    INSERT INTO tbMoneyOutGoing(id, `idExitType`, `idUser`, `Amount`, `DateMv`, `Descrip`)
                 VALUES(0,idType, userId, quantity, dateIn, dcp);
-     UPDATE bdmoneyinout.tbmoneybalnce SET Balance =  res WHERE (tbmoneybalnce.idUser = userId);
-        
+    
+    UPDATE bdmoneyinout.tbmoneybalnce SET Balance =  res WHERE (tbmoneybalnce.idUser = userId);
+    
     IF (sql_error = FALSE) THEN
 		COMMIT; -- Si no hay error ejecuta todas las transacciones
 	ELSE
