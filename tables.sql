@@ -6,9 +6,9 @@
 CREATE DATABASE IF NOT EXISTS bdMoneyInOut;
 USE bdMoneyInOut;
 
-CREATE TABLE IF NOT EXISTS bdmoneyinout.tbPerson
+CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbPerson
 (
-	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
 	FirstName 		VARCHAR(30) NOT NULL,
     LastName        VARCHAR(30) NOT NULL,
     Email  	        VARCHAR(60) NOT NULL UNIQUE,
@@ -23,6 +23,65 @@ CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbPeriodicity
     Descrip     VARCHAR(60),
     PRIMARY KEY (id)
 )ENGINE = InnoDB;
+
+-- Table to store every type of inner or outter movement
+CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbTypeCatalogue
+(
+	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+	TypeC	 		VARCHAR(30) NOT NULL UNIQUE,
+    Descrip         VARCHAR(30) NULL,
+        
+    PRIMARY KEY (id)
+)ENGINE = InnoDB;
+
+-- To separate every catolog entry in groups
+CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbGroupInOut
+(
+	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+	TypeG	 		VARCHAR(30) NOT NULL UNIQUE,
+    Descrip         VARCHAR(30) NULL,
+        
+    PRIMARY KEY (id)
+)ENGINE = InnoDB;
+
+-- To store diferents buildings like a house o restaurant.
+CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbRealState
+(
+	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+	Building 		VARCHAR(30) NOT NULL UNIQUE,
+    Street          VARCHAR(30) NULL,
+    Num				VARCHAR(10) NULL,
+    Descrip         VARCHAR(30) NULL,
+        
+    PRIMARY KEY (id)
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbDependent
+(
+	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+	FirstName		VARCHAR(30) NOT NULL,
+    LastName        VARCHAR(30) NOT NULL,
+    Birth           DATETIME    NOT NULL,
+        
+    PRIMARY KEY (id)
+)ENGINE = InnoDB;
+
+-- TODO revisar esta tabla, aunque parece que si la termine
+CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbCreditCard
+(
+	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+	CardName 		VARCHAR(30) NOT NULL UNIQUE,
+    Institution     VARCHAR(30) NOT NULL,
+    CreditLine 	    DECIMAL(10,2) DEFAULT(0.0),
+    AproveDate      DATETIME NOT NULL,
+    Descrip         VARCHAR(30) NULL,
+        
+    PRIMARY KEY (id)
+)ENGINE = InnoDB;
+
+
+
+
 
 
 -- //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
