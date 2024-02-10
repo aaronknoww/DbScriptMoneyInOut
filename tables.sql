@@ -48,11 +48,12 @@ CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbGroupInOut
 CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbRealState
 (
 	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
-	Building 		VARCHAR(30) NOT NULL UNIQUE,
+	Nick			VARCHAR(30) NOT NULL UNIQUE,
+    BuildingType	VARCHAR(30)	NOT NULL, -- Store if is a house or other type of building.
     Street          VARCHAR(30) NULL,
     Num				VARCHAR(10) NULL,
     Descrip         VARCHAR(30) NULL,
-        
+    
     PRIMARY KEY (id)
 )ENGINE = InnoDB;
 
