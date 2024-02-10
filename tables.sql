@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbAutomovil
         
     PRIMARY KEY (id)
 )ENGINE = InnoDB;
-
+-- To store persons who don't work and is necessary to expense money, like children.
 CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbDependent
 (
 	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbCreditCard
 	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
 	CardName 		VARCHAR(30) NOT NULL UNIQUE,
     Institution     VARCHAR(30) NOT NULL,
-    CreditLine 	    DECIMAL(10,2) DEFAULT(0.0),
+    CreditLine 	    DECIMAL(10,2) DEFAULT(0.0) NOT NULL,
     AproveDate      DATETIME NOT NULL,
     Descrip         VARCHAR(30) NULL,
         
