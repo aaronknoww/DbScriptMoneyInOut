@@ -59,9 +59,10 @@ CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbRealState
 CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbAutomovil
 (
 	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
-	Make	 		VARCHAR(30) NOT NULL UNIQUE,
-    Model           VARCHAR(30) NULL,
-    Yearr			VARCHAR(4)  NULL,
+    Make	 		VARCHAR(30) NOT NULL,
+    Model           VARCHAR(30)	NOT NULL,
+    Yearr			VARCHAR(4)  NOT NULL,
+    Nick			VARCHAR(30) NOT NULL UNIQUE,
     Descrip         VARCHAR(30) NULL,
         
     PRIMARY KEY (id)
@@ -117,13 +118,25 @@ CREATE TABLE IF NOT EXISTS bdmoneyinout.tbUser
     CONSTRAINT fk_User_Person FOREIGN KEY (idPerson) REFERENCES tbPerson (id) ON DELETE CASCADE 
 )ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMoneyBalnce
+(
+	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+    idUser          SMALLINT UNSIGNED,
+	Balance		    DECIMAL(10,2) DEFAULT 0 COMMENT 'To store the money left to every user',
+    
+    PRIMARY KEY (id),
+    CONSTRAINT fk_MoneyBalnce_User FOREIGN KEY (idUser) REFERENCES tbUser (id) ON DELETE CASCADE 
+)ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMovement
 (
 	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+    
 	Amount 		    DECIMAL(10,2) DEFAULT 0 COMMENT 'Income or Outcome quantity',
 	Balance		    DECIMAL(10,2) DEFAULT 0 COMMENT 'Money after store movement',
     DateMv          DATETIME NOT NULL,
     Descrip         VARCHAR(60) NOT NULL,
+    TypeInOut       TINYINT UNSIGNED NOT NULL COMMENT '1 for in, 2 for out',
     
     idUser          SMALLINT UNSIGNED,
     idCatalogue     SMALLINT UNSIGNED,
@@ -139,7 +152,7 @@ CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMovement
     CONSTRAINT fk_Movement_Periodicity FOREIGN KEY (idPeriodicity) REFERENCES tbperiodicity (id) ON DELETE NO ACTION
 )ENGINE = InnoDB;
 
--- todo: terminar esta tabla
+
 CREATE TABLE IF NOT EXISTS bdmoneyinout.tbOutcomeDetail
 (
 	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
@@ -160,76 +173,3 @@ CREATE TABLE IF NOT EXISTS bdmoneyinout.tbOutcomeDetail
     
 )ENGINE = InnoDB;
 
--- TODO:HACER LA TABLA PARA REGISTRAR TODOS LOS MOVIMIENTOS DE ENTRADA Y SALIDA
-
-
-CREATE TABLE IF NOT EXISTS bdmoneyinout.tbInputType
-(
-	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
-	InputType 		VARCHAR(30) NOT NULL UNIQUE,
-    Descrip 	    VARCHAR(60),
-    idPeriodicity   INT UNSIGNED,
-    KEY idx_fk_idPeriodicity(idPeriodicity),    
-    CONSTRAINT fk_inputType_peridicity FOREIGN KEY (idPeriodicity) REFERENCES tbPeriodicity (id) ON DELETE NO ACTION,    
-    PRIMARY KEY (id)
-)ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS bdmoneyinout.tbExitType
-(
-	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
-	ExitType 		VARCHAR(30) NOT NULL UNIQUE,
-    Descrip 	    VARCHAR(60),
-    
-    idPeriodicity   INT UNSIGNED,
-    KEY idx_fk_idPeriodicity(idPeriodicity),    
-    CONSTRAINT fk_exitType_peridicity FOREIGN KEY (idPeriodicity) REFERENCES tbPeriodicity (id) ON DELETE NO ACTION,
-    PRIMARY KEY (id)
-)ENGINE = InnoDB;
-
-
-
-
-CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMoneyBalnce
-(
-	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
-    idUser          INT UNSIGNED,
-	Balance		    DECIMAL(10,2) DEFAULT 0 COMMENT 'To store the money left to every user',
-    
-    PRIMARY KEY (id),
-    CONSTRAINT fk_MoneyBalnce_User FOREIGN KEY (idUser) REFERENCES tbUser (id) ON DELETE CASCADE 
-)ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMoneyIncome
-(
-	id    			INT NOT NULL UNIQUE AUTO_INCREMENT,
-	Amount 		    DECIMAL(10,2) DEFAULT 0 COMMENT 'Income quantity',
-    DateMv          DATETIME NOT NULL,
-    Descrip         VARCHAR(60) NOT NULL,
-    
-    idUser          INT UNSIGNED,
-    idInputType     INT UNSIGNED,
-    
-    PRIMARY KEY (id),
-    INDEX idx_fk_idUser(idUser),    
-    CONSTRAINT fk_MoneyIncomeUser FOREIGN KEY (idUser) REFERENCES tbUser (id) ON DELETE CASCADE,
-    INDEX idx_fk_idInputType(idInputType),    
-    CONSTRAINT fk_MoneyIncomeInputType FOREIGN KEY (idInputType) REFERENCES tbInputType (id) ON DELETE CASCADE 
-)ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS bdmoneyinout.tbMoneyOutGoing
-(
-	id    			INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
-	Amount 		    DECIMAL(10,2) DEFAULT 0 COMMENT 'Income quantity',
-    DateMv          DATETIME NOT NULL,
-    Descrip         VARCHAR(60) NOT NULL,
-    
-    idUser          INT UNSIGNED,
-    idExitType      INT UNSIGNED,
-    
-    PRIMARY KEY (id),
-    INDEX idx_fk_idUser(idUser),    
-    CONSTRAINT fk_MoneyOutGoingUser FOREIGN KEY (idUser) REFERENCES tbUser (id) ON DELETE CASCADE,
-    INDEX idx_fk_idExitType(idExitType),    
-    CONSTRAINT fk_MoneyOutGoingInputType FOREIGN KEY (idExitType) REFERENCES tbExitType (id) ON DELETE CASCADE 
-)ENGINE = InnoDB;
