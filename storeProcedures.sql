@@ -33,6 +33,25 @@ BEGIN
 END //
 DELIMITER ;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- |||  ADD INCOME PROCEDURE  |||||
 
 DROP PROCEDURE IF EXISTS addIncome;

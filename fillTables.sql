@@ -5,11 +5,44 @@
 INSERT INTO tbperiodicity(id, `PeriType`,`Descrip`) VALUES(0,'recurrent','To search the movements that are always made.');
 INSERT INTO tbperiodicity(id, `PeriType`,`Descrip`) VALUES(0,'extraordinary','To look for movements that are not done regularly.');
 
+-- |||||||||||||||||||| REAL STATE |||||||||||||||||||||||
+
+INSERT INTO tbRealState(id, Nick, BuildingType, Street, Num, Descrip)
+VALUES(0, 'Casa Chavenia', 'House', 'Segunda de Ferrocarril', 2321, 'The usual house');
+
+-- ||||||||||||||||||| AUTOMOVIL |||||||||||||||||||||||||||
+
+INSERT INTO tbAutomovil(id,Nick, Make, Model, Yearr, Descrip)
+VALUES(0, 'El Blanco', 'Nissan', 'Altima', '1997', 'Is a Fucking Warrior'),
+	  (0, 'El Negro', 'Mazada', 'Mazada 3', '2015', 'New car and Standar');
+
 -- ||||||||||||||| TABLE PERSON VALUES |||||||||||||||||||||||||||||
 INSERT INTO tbperson(id,`FirstName`,`LastName`,`Email` ) VALUES(0,'Aaron', 'Hernandez', 'aaronhdz1919@gmail.com');
 INSERT INTO tbperson(id,`FirstName`,`LastName`,`Email` ) VALUES(0,'Obinze', 'Hernandez', 'aaroncount19@gmail.com');
 
+-- |||||||||||||| TABLE CREDIT CARD ||||||||||||||||||||||||||||||||||
 
+INSERT INTO tbcreditcard(id, CardName, Institution, CreditLine, AproveDate, Descrip)
+VALUE (0, 'Blue', 'BBVA', 21000.00, '2021-12-24 15:30:01','My first credit card');
+
+INSERT INTO tbtypecatalogue(id, `TypeC`, `Descrip`) 
+VALUES(0,'Agua','Pago de recibo de Agua'),
+	  (0,'Luz','Pago de recibo de Luz'),
+	  (0,'Gas','Pago de recibo de Gas'),
+	  (0,'Cable','Pago de recibo de Cable'),
+	  (0,'Nomina','Sueldo Foxconn'),
+	  (0,'Muebles','Venta de Muebles');
+
+-- |||||||||||||||| DEPENDENT TABLE ||||||||||||||||||||||||
+INSERT INTO tbDependent(id, FirstName, LastName, Birth, Descrip)
+VALUES (0,'Alan','Hernanez', '2023-01-20 19:30:01', 'Hijo');
+
+
+-- ||||||||||||| GROUP IN OUT TABLE ||||||||||||||||||||||||
+
+INSERT INTO tbGroupInOut(id, TypeG, Descrip)
+VALUES (0, 'ingresos', 'Todo las entrada de dinero'),
+	   (0, 'Egresos', 'Todas las salida de dinero');
 
 -- ----------------------------------------------------------
 -- ***************** SON TABLES *****************************

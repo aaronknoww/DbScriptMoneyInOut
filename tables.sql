@@ -60,10 +60,10 @@ CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbRealState
 CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbAutomovil
 (
 	id    			SMALLINT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+	Nick			VARCHAR(30) NOT NULL UNIQUE,
     Make	 		VARCHAR(30) NOT NULL,
     Model           VARCHAR(30)	NOT NULL,
     Yearr			VARCHAR(4)  NOT NULL,
-    Nick			VARCHAR(30) NOT NULL UNIQUE,
     Descrip         VARCHAR(30) NULL,
         
     PRIMARY KEY (id)
@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS bdMoneyInOut.tbDependent
 	FirstName		VARCHAR(30) NOT NULL,
     LastName        VARCHAR(30) NOT NULL,
     Birth           DATETIME    NOT NULL,
+    Descrip         VARCHAR(30) NULL,
         
     PRIMARY KEY (id)
 )ENGINE = InnoDB;
