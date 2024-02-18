@@ -16,9 +16,9 @@ INSERT INTO tbAutomovil(id,Nick, Make, Model, Yearr, Descrip)
 VALUES(0, 'El Blanco', 'Nissan', 'Altima', '1997', 'Is a Fucking Warrior'),
 	  (0, 'El Negro', 'Mazada', 'Mazada 3', '2015', 'New car and Standar');
 
--- ||||||||||||||| TABLE PERSON VALUES |||||||||||||||||||||||||||||
-INSERT INTO tbperson(id,`FirstName`,`LastName`,`Email` ) VALUES(0,'Aaron', 'Hernandez', 'aaronhdz1919@gmail.com');
-INSERT INTO tbperson(id,`FirstName`,`LastName`,`Email` ) VALUES(0,'Obinze', 'Hernandez', 'aaroncount19@gmail.com');
+-- ||||||||||||||| TABLE PERSON |||||||||||||||||||||||||||||
+-- INSERT INTO tbperson(id,`FirstName`,`LastName`,`Email` ) VALUES(0,'Aaron', 'Hernandez', 'aaronhdz1919@gmail.com');
+-- INSERT INTO tbperson(id,`FirstName`,`LastName`,`Email` ) VALUES(0,'Obinze', 'Hernandez', 'aaroncount19@gmail.com');
 
 -- |||||||||||||| TABLE CREDIT CARD ||||||||||||||||||||||||||||||||||
 
@@ -43,6 +43,14 @@ VALUES (0,'Alan','Hernanez', '2023-01-20 19:30:01', 'Hijo');
 INSERT INTO tbGroupInOut(id, TypeG, Descrip)
 VALUES (0, 'ingresos', 'Todo las entrada de dinero'),
 	   (0, 'Egresos', 'Todas las salida de dinero');
+
+-- |||||||||||| OUTCOME TYPE TABLE ||||||||||||||||||||||||
+
+INSERT INTO tbOutComeType(id, OutType, Descrip)
+VALUES (0,'Realstate','Gastos de Casa o Edificios'),
+	   (0,'Automovil','Gastos de los carros'),
+	   (0,'CreditCard','Pagos con la tarjeta'),
+	   (0,'Dependent','Gastos de cada dependiente');
 
 -- ----------------------------------------------------------
 -- ***************** SON TABLES *****************************

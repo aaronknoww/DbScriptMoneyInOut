@@ -34,7 +34,73 @@ END //
 DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS addOutFlowMoney; -- To store just outflow of money. 
+DELIMITER // 
+CREATE PROCEDURE addOutFlowMoney(IN userId SMALLINT, IN universalId SMALLINT, IN catalogueId SMALLINT, IN groupId SMALLINT, IN periodicityId TINYINT,
+ IN amount DECIMAL(10,2), dateIn DATETIME, IN dcp VARCHAR(60))
+BEGIN
+-- universalId could be idAutomovil, idRealstate, idDependent or idCreditCard.
 
+    DECLARE newId  INT UNSIGNED DEFAULT 1000;
+    DECLARE auxId  INT UNSIGNED DEFAULT 1000;
+    DECLARE res DECIMAL (10,2) DEFAULT 0.0;
+    DECLARE sql_error TINYINT DEFAULT FALSE;
+    
+    THIS_PROC: BEGIN
+
+    SELECT COUNT(*) INTO newId FROM tbuser WHERE userId = id;
+ 
+    IF( newId < 1)THEN			
+      SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'ERROR USER ID DOES NOT EXIST';
+			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
+	END IF;
+        
+    
+     SELECT COUNT(*) INTO auxId FROM tbtypecatalogue WHERE catalogueId = id; 
+    IF( auxId < 1)THEN			
+      SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'ERROR: THIS CATALOGUE INPUT DOES NOT EXIST';
+			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
+	END IF;
+    
+    SELECT COUNT(*) INTO auxId FROM tbgroupinout WHERE groupId = id; 
+    IF( auxId < 1)THEN			
+      SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'ERROR: THIS GROUP INPUT DOES NOT EXIST';
+			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
+	END IF;
+    
+    SELECT COUNT(*) INTO auxId FROM tbperiodicity WHERE peridiocityId = id; 
+    IF( auxId < 1)THEN			
+      SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'ERROR: THE VALUE OF PERIODICITY IS WRONG';
+			LEAVE THIS_PROC; -- Sale del procedimiento debido a que no hay condiciones para continuar con la ejecucion.
+	END IF;
+
+    START TRANSACTION;
+
+    SELECT id INTO newId FROM tbuser WHERE userId = id;
+
+    SELECT Balance INTO res FROM tbmoneybalnce WHERE id = userId;
+
+    SET res = res + quantity;
+
+    INSERT INTO tbmoneyincome(id, `idInputType`, `idUser`, `Amount`, `DateMv`, `Descrip`) 
+                VALUES(0,idType, userId, quantity, dateIn, dcp);
+    
+    UPDATE bdmoneyinout.tbmoneybalnce SET Balance =  res WHERE (tbmoneybalnce.idUser = userId);
+    
+    IF (sql_error = FALSE) THEN
+		COMMIT; -- Si no hay error ejecuta todas las transacciones
+	ELSE
+		ROLLBACK; -- Si encutra algun error en 1 de las transacciones deja las tablas en su estado original.
+
+	END IF;      
+    	
+	END; --  END OF PROCEDURE.
+END //
+DELIMITER ;
 
 
 
